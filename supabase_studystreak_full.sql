@@ -1,0 +1,18 @@
+create extension if not exists pgcrypto;
+create table if not exists profiles (id uuid primary key references auth.users(id) on delete cascade,email text,username text,display_name text,house text,year_group text,created_at timestamptz default now());
+create table if not exists study_sessions (id uuid primary key default gen_random_uuid(),user_id uuid references auth.users(id) on delete cascade not null,subject text not null,minutes integer default 0,xp integer default 0,notes text,check_in text,session_date date default current_date,created_at timestamptz default now());
+create table if not exists friends (id uuid primary key default gen_random_uuid(),requester uuid references auth.users(id) on delete cascade not null,receiver uuid references auth.users(id) on delete cascade not null,status text default 'accepted',created_at timestamptz default now(),unique(requester,receiver));
+create table if not exists competitions (id uuid primary key default gen_random_uuid(),name text not null,type text default 'friends',join_code text unique,created_at timestamptz default now());
+create table if not exists competition_members (id uuid primary key default gen_random_uuid(),competition_id uuid references competitions(id) on delete cascade,user_id uuid references auth.users(id) on delete cascade,created_at timestamptz default now(),unique(competition_id,user_id));
+alter table profiles enable row level security;alter table study_sessions enable row level security;alter table friends enable row level security;alter table competitions enable row level security;alter table competition_members enable row level security;
+drop policy if exists "profiles readable" on profiles;create policy "profiles readable" on profiles for select using (true);
+drop policy if exists "profiles own write" on profiles;create policy "profiles own write" on profiles for all using (auth.uid()=id) with check (auth.uid()=id);
+drop policy if exists "sessions own" on study_sessions;create policy "sessions own" on study_sessions for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+drop policy if exists "sessions readable leaderboard" on study_sessions;create policy "sessions readable leaderboard" on study_sessions for select using (true);
+drop policy if exists "friends own" on friends;create policy "friends own" on friends for all using (auth.uid()=requester or auth.uid()=receiver) with check (auth.uid()=requester or auth.uid()=receiver);
+drop policy if exists "competitions readable" on competitions;create policy "competitions readable" on competitions for select using (true);
+drop policy if exists "competitions create" on competitions;create policy "competitions create" on competitions for insert with check (true);
+drop policy if exists "competition members own" on competition_members;create policy "competition members own" on competition_members for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+drop policy if exists "competition members readable" on competition_members;create policy "competition members readable" on competition_members for select using (true);
+create or replace view leaderboard_weekly as select p.id as user_id,p.username,p.display_name,coalesce(sum(s.minutes),0)::int as minutes,coalesce(sum(s.xp),0)::int as xp from profiles p left join study_sessions s on s.user_id=p.id and s.session_date >= (current_date - ((extract(dow from current_date)::int + 6) % 7)) group by p.id,p.username,p.display_name order by xp desc,minutes desc;
+create or replace view friends_view as select f.*,case when auth.uid()=f.requester then pr.email else pq.email end as friend_email from friends f left join profiles pq on pq.id=f.requester left join profiles pr on pr.id=f.receiver;

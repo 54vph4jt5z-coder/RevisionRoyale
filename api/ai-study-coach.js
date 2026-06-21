@@ -1,0 +1,7 @@
+export default async function handler(req,res){
+ if(req.method!=="POST")return res.status(405).json({error:"Method not allowed"});
+ const {question,stats,recentSessions,profile}=req.body||{};const apiKey=process.env.OPENAI_API_KEY;
+ const fallback=`📌 Study Insight\nYou currently have a ${stats?.streak||0}-day streak and ${stats?.xp||0} XP.\n\n🎯 Recommended Actions\n• Study for at least 20 minutes today.\n• Focus on the subject you revised least recently.\n• Add notes after each session.`;
+ if(!apiKey)return res.status(200).json({answer:fallback,source:"fallback"});
+ try{const response=await fetch("https://api.openai.com/v1/responses",{method:"POST",headers:{"Authorization":`Bearer ${apiKey}`,"Content-Type":"application/json"},body:JSON.stringify({model:process.env.OPENAI_MODEL||"gpt-4.1-mini",input:[{role:"system",content:"You are StudyStreak AI Coach. Help students revise safely and consistently. Be friendly, concise, and practical. Respond to every message. Do not shame students for missing days."},{role:"user",content:JSON.stringify({question,stats,recentSessions,profile})}]})});const data=await response.json();let answer=data.output_text||"";if(!answer&&Array.isArray(data.output))answer=data.output.flatMap(o=>o.content||[]).map(c=>c.text||"").filter(Boolean).join("\n");return res.status(200).json({answer:answer||fallback,source:answer?"openai":"fallback"})}catch(e){return res.status(200).json({answer:fallback,source:"fallback"})}
+}

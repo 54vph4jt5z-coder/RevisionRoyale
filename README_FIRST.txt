@@ -1,0 +1,1 @@
+StudyStreak full version\n\nRun supabase_studystreak_full.sql in Supabase.\nSet Vercel env vars: VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY, OPENAI_API_KEY optional.\n

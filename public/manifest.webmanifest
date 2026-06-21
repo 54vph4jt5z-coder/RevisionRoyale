@@ -1,0 +1,16 @@
+{
+  "name": "StudyStreak",
+  "short_name": "StudyStreak",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07111f",
+  "theme_color": "#2563eb",
+  "description": "Study streaks, XP, leaderboards, achievements and AI coaching.",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
