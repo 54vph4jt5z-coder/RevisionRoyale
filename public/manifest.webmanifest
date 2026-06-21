@@ -3,7 +3,7 @@
   "short_name": "RevisionRoyale",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#eef4ff",
+  "background_color": "#f5f8ff",
   "theme_color": "#7c3aed",
   "icons": [
     {
