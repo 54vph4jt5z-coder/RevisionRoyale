@@ -1,8 +1,10 @@
 {
-  "name": "Revision Royale",
+  "name": "RevisionRoyale",
   "short_name": "RevisionRoyale",
   "start_url": "/",
   "display": "standalone",
+  "background_color": "#f6f9ff",
+  "theme_color": "#7c3aed",
   "icons": [
     {
       "src": "/favicon.svg",
