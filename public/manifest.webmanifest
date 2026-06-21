@@ -1,11 +1,10 @@
 {
-  "name": "StudyStreak",
-  "short_name": "StudyStreak",
+  "name": "RevisionRoyale",
+  "short_name": "RevisionRoyale",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#07111f",
-  "theme_color": "#2563eb",
-  "description": "Study streaks, XP, leaderboards, achievements and AI coaching.",
+  "background_color": "#eef4ff",
+  "theme_color": "#7c3aed",
   "icons": [
     {
       "src": "/favicon.svg",
