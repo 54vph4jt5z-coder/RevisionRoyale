@@ -150,7 +150,1848 @@ function calcStreak(sessions){ const days=[...new Set((sessions||[]).map(s=>s.se
 function averageScore(sessions){ const scored=sessions.map(s=>Number(s.score||0)).filter(Boolean); return scored.length?Math.round(scored.reduce((a,b)=>a+b,0)/scored.length):0; }
 function daysUntil(dateStr){ const diff=new Date(dateStr+"T09:00:00")-new Date(); return Math.max(0,Math.ceil(diff/86400000)); }
 
+const QUESTION_FACTS = {
+  "Biology": {
+    "National 5": {
+      "Cell Biology": [
+        [
+          "Diffusion",
+          "movement of molecules from high to low concentration down a concentration gradient",
+          [
+            "movement of water only through a membrane",
+            "movement requiring energy",
+            "movement of DNA into proteins"
+          ]
+        ],
+        [
+          "Osmosis",
+          "movement of water from high water concentration to low water concentration through a selectively permeable membrane",
+          [
+            "movement of glucose using ATP",
+            "movement of ions through the nucleus",
+            "movement of enzymes to substrates"
+          ]
+        ],
+        [
+          "Active Transport",
+          "movement of substances against a concentration gradient using energy",
+          [
+            "passive movement down a gradient",
+            "movement of water only",
+            "copying DNA before cell division"
+          ]
+        ],
+        [
+          "Enzymes",
+          "biological catalysts that speed up reactions and have an optimum temperature and pH",
+          [
+            "cell walls made of cellulose",
+            "genes that code for eye colour",
+            "membranes that store starch"
+          ]
+        ],
+        [
+          "Respiration",
+          "process that releases energy from glucose in cells",
+          [
+            "process that stores genetic information",
+            "movement of water across membranes",
+            "production of gametes"
+          ]
+        ],
+        [
+          "Photosynthesis",
+          "process in plants using light energy to make glucose from carbon dioxide and water",
+          [
+            "breakdown of glucose to release energy",
+            "movement of ions with energy",
+            "fusion of gametes"
+          ]
+        ]
+      ],
+      "Multicellular Organisms": [
+        [
+          "Stem Cells",
+          "unspecialised cells that can divide and develop into specialised cells",
+          [
+            "cells that cannot divide",
+            "enzymes that digest proteins",
+            "hormones made of DNA"
+          ]
+        ],
+        [
+          "Specialised Cells",
+          "cells adapted to carry out a particular function",
+          [
+            "cells with no function",
+            "organ systems made of enzymes",
+            "genes without DNA"
+          ]
+        ],
+        [
+          "Nervous Control",
+          "fast communication using electrical impulses along nerves",
+          [
+            "slow chemical communication in blood",
+            "diffusion of water",
+            "random movement of molecules"
+          ]
+        ],
+        [
+          "Hormonal Control",
+          "chemical communication using hormones carried in the bloodstream",
+          [
+            "electrical impulses through wires",
+            "active transport of glucose only",
+            "photosynthesis in leaves"
+          ]
+        ],
+        [
+          "Genotype",
+          "the genetic information or alleles an organism has",
+          [
+            "the visible appearance only",
+            "a type of enzyme",
+            "a food chain level"
+          ]
+        ],
+        [
+          "Phenotype",
+          "the observable characteristics caused by genotype and environment",
+          [
+            "the alleles only",
+            "an organ system",
+            "a sampling method"
+          ]
+        ]
+      ],
+      "Life On Earth": [
+        [
+          "Biodiversity",
+          "the variety of living organisms in an ecosystem",
+          [
+            "the amount of glucose in a cell",
+            "one organism's genotype",
+            "a type of active transport"
+          ]
+        ],
+        [
+          "Quadrat",
+          "a square frame used to sample organisms in a habitat",
+          [
+            "a molecule in DNA",
+            "a type of hormone",
+            "a graph of velocity"
+          ]
+        ],
+        [
+          "Food Chain",
+          "a diagram showing feeding relationships and energy transfer",
+          [
+            "a DNA sequence",
+            "a cell membrane model",
+            "a chemical equation"
+          ]
+        ],
+        [
+          "Producer",
+          "an organism such as a plant that makes its own food",
+          [
+            "an organism that only eats animals",
+            "a genetic mutation",
+            "a sampling error"
+          ]
+        ],
+        [
+          "Competition",
+          "when organisms need the same limited resource",
+          [
+            "when enzymes denature",
+            "when water moves by osmosis",
+            "when gametes fuse"
+          ]
+        ],
+        [
+          "Adaptation",
+          "a feature that helps an organism survive in its environment",
+          [
+            "a random table of results",
+            "a food molecule only",
+            "a type of quadrat"
+          ]
+        ]
+      ]
+    },
+    "Higher": {
+      "DNA And The Genome": [
+        [
+          "DNA Replication",
+          "the process of copying DNA before cell division",
+          [
+            "translation of mRNA into protein",
+            "breakdown of glucose",
+            "movement of water across membranes"
+          ]
+        ],
+        [
+          "mRNA",
+          "a molecule that carries a copy of genetic information from DNA to ribosomes",
+          [
+            "a lipid in membranes",
+            "a hormone from glands",
+            "an enzyme that digests starch"
+          ]
+        ],
+        [
+          "Codon",
+          "three bases on mRNA that code for one amino acid",
+          [
+            "a whole chromosome",
+            "a type of quadrat",
+            "a cell organelle"
+          ]
+        ],
+        [
+          "Mutation",
+          "a change in DNA sequence that can affect proteins",
+          [
+            "movement of water",
+            "chemical digestion",
+            "loss of heat energy"
+          ]
+        ],
+        [
+          "Gene Expression",
+          "process where information in a gene is used to make a functional product",
+          [
+            "random inheritance of every trait",
+            "osmosis through membranes",
+            "food chains in ecosystems"
+          ]
+        ],
+        [
+          "Genomic Sequencing",
+          "determining the order of bases in DNA",
+          [
+            "measuring animal behaviour only",
+            "counting quadrats",
+            "heating enzymes"
+          ]
+        ]
+      ],
+      "Metabolism And Survival": [
+        [
+          "Metabolic Pathway",
+          "a series of enzyme-controlled reactions",
+          [
+            "a food chain diagram",
+            "a line graph only",
+            "a gene mutation"
+          ]
+        ],
+        [
+          "Induced Fit",
+          "enzyme active site changes shape to fit the substrate",
+          [
+            "substrate changes into DNA",
+            "water moves through membranes",
+            "organisms compete for food"
+          ]
+        ],
+        [
+          "Respiration Pathways",
+          "chemical pathways that release energy from glucose",
+          [
+            "light reactions only",
+            "sampling ecosystems",
+            "DNA sequencing only"
+          ]
+        ],
+        [
+          "Limiting Factor",
+          "a factor that limits the rate of a process such as photosynthesis",
+          [
+            "an unlimited resource",
+            "a type of chromosome",
+            "a food web"
+          ]
+        ],
+        [
+          "Homeostasis",
+          "maintaining a stable internal environment",
+          [
+            "random changes in DNA",
+            "sampling organisms",
+            "making glucose only"
+          ]
+        ],
+        [
+          "Survival Adaptation",
+          "feature or behaviour increasing chance of survival",
+          [
+            "a lab error",
+            "a type of graph",
+            "a codon"
+          ]
+        ]
+      ],
+      "Sustainability And Interdependence": [
+        [
+          "Photosynthesis",
+          "the process forming glucose using light, carbon dioxide and water",
+          [
+            "the breakdown of glucose only",
+            "DNA sequencing",
+            "active transport in roots only"
+          ]
+        ],
+        [
+          "Food Security",
+          "reliable access to enough safe and nutritious food",
+          [
+            "movement of water in cells",
+            "a type of mutation",
+            "a hormone signal"
+          ]
+        ],
+        [
+          "Population Growth",
+          "change in number of organisms in a population over time",
+          [
+            "change in enzyme shape only",
+            "the order of DNA bases",
+            "a single food molecule"
+          ]
+        ],
+        [
+          "Biodiversity",
+          "variety of species and genetic variation in ecosystems",
+          [
+            "only number of humans",
+            "only cell size",
+            "only rate of respiration"
+          ]
+        ],
+        [
+          "Sustainable Production",
+          "producing resources without damaging future availability",
+          [
+            "using all resources immediately",
+            "ignoring environmental impact",
+            "random crop growth"
+          ]
+        ],
+        [
+          "Interdependence",
+          "organisms depending on each other and their environment",
+          [
+            "cells dividing only",
+            "enzymes denaturing only",
+            "DNA copying only"
+          ]
+        ]
+      ]
+    },
+    "Advanced Higher": {
+      "Cells And Proteins": [
+        [
+          "Protein Structure",
+          "the shape of a protein determines its function",
+          [
+            "proteins are always straight chains",
+            "proteins only store genetic code",
+            "proteins are made of nucleotides only"
+          ]
+        ],
+        [
+          "Cell Signalling",
+          "cells communicate using signalling molecules and receptors",
+          [
+            "cells communicate by random heat loss",
+            "DNA always leaves nucleus",
+            "enzymes become chromosomes"
+          ]
+        ],
+        [
+          "Membrane Proteins",
+          "proteins in membranes help transport and communication",
+          [
+            "proteins that make cell walls in animals",
+            "DNA bases in cytoplasm",
+            "only starch molecules"
+          ]
+        ],
+        [
+          "Electrophoresis",
+          "a technique separating molecules using an electric field",
+          [
+            "a method for counting quadrats",
+            "a type of photosynthesis",
+            "a hormone pathway"
+          ]
+        ],
+        [
+          "Immunoassay",
+          "a technique using specific antibody-antigen binding",
+          [
+            "a food chain diagram",
+            "a gas law calculation",
+            "a vector diagram"
+          ]
+        ],
+        [
+          "Proteomics",
+          "large-scale study of proteins in cells or organisms",
+          [
+            "study of weather only",
+            "counting populations only",
+            "using pH paper only"
+          ]
+        ]
+      ],
+      "Organisms And Evolution": [
+        [
+          "Natural Selection",
+          "individuals with advantageous variations survive and reproduce more",
+          [
+            "all individuals survive equally",
+            "organisms choose mutations",
+            "enzymes decide inheritance"
+          ]
+        ],
+        [
+          "Speciation",
+          "formation of new species after isolation and genetic divergence",
+          [
+            "cell division only",
+            "food chain transfer",
+            "DNA replication only"
+          ]
+        ],
+        [
+          "Phylogeny",
+          "evolutionary relationships between organisms",
+          [
+            "a chemical bond",
+            "a velocity graph",
+            "a membrane protein only"
+          ]
+        ],
+        [
+          "Field Technique",
+          "method used to collect ecological data reliably",
+          [
+            "a random guess",
+            "a protein fold",
+            "a lab-only titration"
+          ]
+        ],
+        [
+          "Animal Behaviour",
+          "responses that can improve survival and reproduction",
+          [
+            "a chemical equation",
+            "a type of chromosome",
+            "a voltage reading"
+          ]
+        ],
+        [
+          "Genetic Drift",
+          "random change in allele frequency in a population",
+          [
+            "directed change chosen by organisms",
+            "osmosis",
+            "enzyme denaturation"
+          ]
+        ]
+      ],
+      "Investigative Biology": [
+        [
+          "Hypothesis",
+          "a testable scientific prediction",
+          [
+            "a final mark",
+            "a random opinion",
+            "a type of enzyme"
+          ]
+        ],
+        [
+          "Independent Variable",
+          "the variable deliberately changed in an experiment",
+          [
+            "the variable measured",
+            "the variable kept constant",
+            "the conclusion"
+          ]
+        ],
+        [
+          "Dependent Variable",
+          "the variable measured in an experiment",
+          [
+            "the variable changed deliberately",
+            "a safety rule only",
+            "a literature source"
+          ]
+        ],
+        [
+          "Control Variables",
+          "factors kept constant to make a test fair",
+          [
+            "variables ignored",
+            "random outcomes",
+            "only graph labels"
+          ]
+        ],
+        [
+          "Reliability",
+          "consistency of results, improved by repeats",
+          [
+            "how colourful a graph is",
+            "the title of the report",
+            "a food chain"
+          ]
+        ],
+        [
+          "Evaluation",
+          "judging method, data quality, limitations and improvements",
+          [
+            "copying results only",
+            "choosing no variables",
+            "avoiding conclusions"
+          ]
+        ]
+      ]
+    }
+  },
+  "Physics": {
+    "National 5": {
+      "Dynamics And Space": [
+        [
+          "Velocity",
+          "speed in a stated direction, so it is a vector",
+          [
+            "distance only",
+            "energy stored in fuel",
+            "current in a circuit"
+          ]
+        ],
+        [
+          "Acceleration",
+          "change in velocity per unit time",
+          [
+            "distance divided by mass",
+            "force divided by voltage",
+            "energy per charge"
+          ]
+        ],
+        [
+          "Newton's Second Law",
+          "resultant force equals mass times acceleration",
+          [
+            "voltage equals current times resistance",
+            "speed equals distance times time",
+            "energy equals charge divided by voltage"
+          ]
+        ],
+        [
+          "Projectile Motion",
+          "motion of an object under gravity with horizontal and vertical components",
+          [
+            "motion with no forces ever",
+            "current flow in wires",
+            "light bending in glass"
+          ]
+        ],
+        [
+          "Satellite",
+          "object orbiting a planet due to gravitational attraction",
+          [
+            "a chemical cell",
+            "a radiation detector",
+            "a heat store"
+          ]
+        ],
+        [
+          "Redshift",
+          "increase in wavelength of light from galaxies moving away",
+          [
+            "decrease in voltage",
+            "increase in current",
+            "nuclear decay only"
+          ]
+        ]
+      ],
+      "Electricity And Energy": [
+        [
+          "Current",
+          "rate of flow of electric charge",
+          [
+            "energy per second",
+            "force per mass",
+            "distance per time"
+          ]
+        ],
+        [
+          "Potential Difference",
+          "energy transferred per unit charge",
+          [
+            "charge per second",
+            "mass per volume",
+            "acceleration per time"
+          ]
+        ],
+        [
+          "Resistance",
+          "opposition to current in a circuit",
+          [
+            "stored heat only",
+            "rate of decay",
+            "distance travelled"
+          ]
+        ],
+        [
+          "Power",
+          "energy transferred per second",
+          [
+            "current times time only",
+            "mass times velocity",
+            "frequency times wavelength"
+          ]
+        ],
+        [
+          "Specific Heat Capacity",
+          "energy needed to raise 1 kg of a substance by 1°C",
+          [
+            "voltage per coulomb",
+            "force per metre",
+            "mass per charge"
+          ]
+        ],
+        [
+          "Conservation of Energy",
+          "energy cannot be created or destroyed, only transferred",
+          [
+            "energy disappears in circuits",
+            "mass always becomes current",
+            "heat has no energy"
+          ]
+        ]
+      ],
+      "Waves And Radiation": [
+        [
+          "Frequency",
+          "number of waves passing a point each second",
+          [
+            "distance between wave peaks",
+            "height of a wave",
+            "mass of a wave"
+          ]
+        ],
+        [
+          "Wavelength",
+          "distance between corresponding points on adjacent waves",
+          [
+            "number of waves per second",
+            "energy per charge",
+            "time for one orbit"
+          ]
+        ],
+        [
+          "Wave Speed",
+          "speed found from frequency multiplied by wavelength",
+          [
+            "current times resistance",
+            "mass times acceleration",
+            "charge divided by time"
+          ]
+        ],
+        [
+          "Alpha Radiation",
+          "helium nuclei with low penetration and high ionisation",
+          [
+            "electromagnetic wave with high penetration",
+            "electron from nucleus",
+            "neutral radiation only"
+          ]
+        ],
+        [
+          "Half-life",
+          "time for activity or number of nuclei to halve",
+          [
+            "time for speed to double",
+            "voltage in a circuit",
+            "distance for one wavelength"
+          ]
+        ],
+        [
+          "Gamma Radiation",
+          "electromagnetic radiation with high penetration",
+          [
+            "helium nuclei",
+            "water wave",
+            "electric current"
+          ]
+        ]
+      ]
+    },
+    "Higher": {
+      "Our Dynamic Universe": [
+        [
+          "Resultant Force",
+          "single force with same effect as all forces acting together",
+          [
+            "energy stored in a capacitor",
+            "charge per second",
+            "frequency of light"
+          ]
+        ],
+        [
+          "Gravitational Field Strength",
+          "force per unit mass in a gravitational field",
+          [
+            "energy per charge",
+            "distance per time",
+            "wavelength per frequency"
+          ]
+        ],
+        [
+          "Redshift",
+          "increase in wavelength from objects moving away",
+          [
+            "decrease in mass",
+            "increase in current",
+            "loss of charge"
+          ]
+        ],
+        [
+          "Hubble's Law",
+          "more distant galaxies recede faster",
+          [
+            "resistance increases with current only",
+            "force equals charge only",
+            "energy cannot transfer"
+          ]
+        ],
+        [
+          "Special Relativity",
+          "time and length measurements depend on relative motion at high speeds",
+          [
+            "all observers measure the same time always",
+            "only applies to circuits",
+            "explains acid reactions"
+          ]
+        ],
+        [
+          "Kinetic Energy",
+          "energy an object has due to motion",
+          [
+            "energy due to charge only",
+            "energy in chemical bonds only",
+            "a type of radiation"
+          ]
+        ]
+      ],
+      "Particles And Waves": [
+        [
+          "Standard Model",
+          "classification of fundamental particles and interactions",
+          [
+            "a model of ecosystems",
+            "a gas law table",
+            "a resistor rule"
+          ]
+        ],
+        [
+          "Quark",
+          "fundamental particle making up hadrons",
+          [
+            "a light ray",
+            "a circuit component",
+            "a unit of voltage"
+          ]
+        ],
+        [
+          "Photoelectric Effect",
+          "emission of electrons from a surface when light of sufficient frequency is incident",
+          [
+            "reflection of sound only",
+            "heating water only",
+            "formation of ions in salt"
+          ]
+        ],
+        [
+          "Interference",
+          "superposition of waves causing reinforcement or cancellation",
+          [
+            "random motion of particles",
+            "force on a mass",
+            "charge flow"
+          ]
+        ],
+        [
+          "Nuclear Equation",
+          "equation showing conservation of nucleon and proton number",
+          [
+            "chemical equation only",
+            "voltage rule",
+            "ecosystem diagram"
+          ]
+        ],
+        [
+          "Spectra",
+          "patterns of wavelengths used as evidence about atoms and stars",
+          [
+            "only a force graph",
+            "a resistor network",
+            "a heat capacity table"
+          ]
+        ]
+      ],
+      "Electricity": [
+        [
+          "Electric Field",
+          "region where a charge experiences a force",
+          [
+            "region where mass cannot exist",
+            "only heat transfer",
+            "gas pressure zone"
+          ]
+        ],
+        [
+          "Capacitor",
+          "component that stores charge and energy in an electric field",
+          [
+            "component that emits alpha radiation",
+            "a force meter",
+            "a light spectrum"
+          ]
+        ],
+        [
+          "Semiconductor",
+          "material with conductivity between conductor and insulator",
+          [
+            "perfect insulator always",
+            "perfect conductor always",
+            "a radioactive source"
+          ]
+        ],
+        [
+          "Ohm's Law",
+          "current is proportional to potential difference when temperature is constant",
+          [
+            "force equals mass times acceleration",
+            "energy equals mass times height",
+            "speed equals distance over time"
+          ]
+        ],
+        [
+          "Potential Divider",
+          "circuit that produces a chosen fraction of supply voltage",
+          [
+            "device for measuring half-life",
+            "a wave superposition",
+            "a type of quark"
+          ]
+        ],
+        [
+          "Internal Resistance",
+          "resistance inside a source causing lost volts",
+          [
+            "resistance outside only",
+            "charge stored in capacitor",
+            "mass per unit volume"
+          ]
+        ]
+      ],
+      "Researching Physics": [
+        [
+          "Uncertainty",
+          "range around a measurement showing doubt in its value",
+          [
+            "exact proof of no error",
+            "only a graph title",
+            "a type of particle"
+          ]
+        ],
+        [
+          "Gradient",
+          "slope of a graph used to find relationships",
+          [
+            "height of bars only",
+            "colour of a line",
+            "units of voltage only"
+          ]
+        ],
+        [
+          "Valid Conclusion",
+          "conclusion supported by results and linked to aim",
+          [
+            "opinion without data",
+            "copy of method",
+            "random prediction"
+          ]
+        ],
+        [
+          "Systematic Error",
+          "consistent error affecting results in same direction",
+          [
+            "random scatter only",
+            "correct calibration",
+            "a fair test feature"
+          ]
+        ],
+        [
+          "Repeat Measurements",
+          "extra measurements used to improve reliability",
+          [
+            "changing every variable",
+            "removing all data",
+            "avoiding graphs"
+          ]
+        ],
+        [
+          "Control Variable",
+          "factor kept constant in an investigation",
+          [
+            "measured outcome",
+            "final conclusion",
+            "uncertainty"
+          ]
+        ]
+      ]
+    },
+    "Advanced Higher": {
+      "Rotational Motion And Astrophysics": [
+        [
+          "Angular Velocity",
+          "rate of change of angular displacement",
+          [
+            "linear distance only",
+            "electric charge rate",
+            "wave frequency only"
+          ]
+        ],
+        [
+          "Torque",
+          "turning effect of a force",
+          [
+            "rate of energy transfer",
+            "charge per second",
+            "mass per volume"
+          ]
+        ],
+        [
+          "Moment of Inertia",
+          "resistance of an object to angular acceleration",
+          [
+            "resistance to current",
+            "gravitational field strength",
+            "frequency ratio"
+          ]
+        ],
+        [
+          "Centripetal Force",
+          "force towards centre causing circular motion",
+          [
+            "force away from centre always",
+            "electric field only",
+            "nuclear force only"
+          ]
+        ],
+        [
+          "Orbital Motion",
+          "motion of an object around a massive body due to gravity",
+          [
+            "only straight-line motion",
+            "only sound waves",
+            "chemical bonding"
+          ]
+        ],
+        [
+          "Stellar Parallax",
+          "apparent shift of nearby stars used to measure distance",
+          [
+            "current in a circuit",
+            "force on a spring",
+            "mass of a resistor"
+          ]
+        ]
+      ],
+      "Quanta And Waves": [
+        [
+          "Photon",
+          "packet of electromagnetic radiation energy",
+          [
+            "unit of mass",
+            "component of a resistor",
+            "type of acid"
+          ]
+        ],
+        [
+          "de Broglie Wavelength",
+          "wavelength associated with a moving particle",
+          [
+            "distance between planets only",
+            "voltage per charge",
+            "thermal capacity"
+          ]
+        ],
+        [
+          "Wave-Particle Duality",
+          "matter and light can show both wave and particle behaviour",
+          [
+            "light is only a particle always",
+            "electrons are only waves always",
+            "waves have no energy"
+          ]
+        ],
+        [
+          "Polarisation",
+          "restriction of vibrations to one plane",
+          [
+            "increase in mass",
+            "chemical oxidation",
+            "nuclear fusion"
+          ]
+        ],
+        [
+          "Diffraction",
+          "spreading of waves around gaps or edges",
+          [
+            "charge storage",
+            "force due to gravity",
+            "resistor heating"
+          ]
+        ],
+        [
+          "Interference Pattern",
+          "pattern from superposition of coherent waves",
+          [
+            "random circuit fault",
+            "chemical precipitate",
+            "satellite orbit"
+          ]
+        ]
+      ],
+      "Electromagnetism": [
+        [
+          "Magnetic Flux",
+          "measure of magnetic field passing through an area",
+          [
+            "charge stored in a capacitor",
+            "mass per volume",
+            "frequency of a photon"
+          ]
+        ],
+        [
+          "Induced EMF",
+          "voltage produced by changing magnetic flux",
+          [
+            "force from static mass",
+            "half-life value",
+            "chemical pH"
+          ]
+        ],
+        [
+          "Lenz's Law",
+          "induced current opposes the change causing it",
+          [
+            "current always helps the change",
+            "voltage equals wavelength",
+            "mass is conserved only"
+          ]
+        ],
+        [
+          "Electric Field Strength",
+          "force per unit charge",
+          [
+            "force per unit mass",
+            "energy per mass",
+            "charge per volume"
+          ]
+        ],
+        [
+          "Capacitor Discharge",
+          "stored charge decreases through a circuit over time",
+          [
+            "nuclei decay by alpha only",
+            "waves reflect from barriers",
+            "planets orbit stars"
+          ]
+        ],
+        [
+          "AC Generator",
+          "device using electromagnetic induction to produce alternating voltage",
+          [
+            "device storing DNA",
+            "device measuring pH",
+            "device making enzymes"
+          ]
+        ]
+      ],
+      "Investigating Physics": [
+        [
+          "Aim",
+          "what the investigation is trying to find out",
+          [
+            "a final graph only",
+            "a safety symbol",
+            "a random conclusion"
+          ]
+        ],
+        [
+          "Risk Assessment",
+          "identifying hazards and reducing risk",
+          [
+            "ignoring uncertainty",
+            "removing repeats",
+            "changing all variables"
+          ]
+        ],
+        [
+          "Raw Data",
+          "measurements collected directly during the experiment",
+          [
+            "processed conclusion only",
+            "internet notes only",
+            "the title page"
+          ]
+        ],
+        [
+          "Data Processing",
+          "calculations and graphs used to analyse results",
+          [
+            "random guessing",
+            "changing hypothesis after result",
+            "deleting anomalies without reason"
+          ]
+        ],
+        [
+          "Evaluation",
+          "judging reliability, validity, limitations and improvements",
+          [
+            "listing apparatus only",
+            "stating no errors exist",
+            "copying the aim"
+          ]
+        ],
+        [
+          "Uncertainty Combination",
+          "using rules to combine measurement uncertainties",
+          [
+            "ignoring units",
+            "only drawing diagrams",
+            "counting organisms"
+          ]
+        ]
+      ]
+    }
+  },
+  "Chemistry": {
+    "National 5": {
+      "Chemical Changes And Structure": [
+        [
+          "Collision Theory",
+          "reaction rate depends on collision frequency and energy",
+          [
+            "atoms never collide",
+            "rate only depends on colour",
+            "reactions need no particles"
+          ]
+        ],
+        [
+          "Covalent Bond",
+          "bond formed by sharing electrons",
+          [
+            "bond from electron transfer only",
+            "bond between planets",
+            "force in a spring"
+          ]
+        ],
+        [
+          "Ionic Bond",
+          "electrostatic attraction between oppositely charged ions",
+          [
+            "sharing electrons equally",
+            "hydrogen bond only",
+            "metal atoms floating"
+          ]
+        ],
+        [
+          "Acid",
+          "substance with pH below 7 that releases hydrogen ions in water",
+          [
+            "substance with pH above 7",
+            "neutral molecule only",
+            "insoluble salt always"
+          ]
+        ],
+        [
+          "Neutralisation",
+          "acid reacting with alkali to form salt and water",
+          [
+            "metal melting",
+            "polymer breaking only",
+            "DNA replication"
+          ]
+        ],
+        [
+          "Mole",
+          "amount of substance containing Avogadro's number of particles",
+          [
+            "unit of current",
+            "measure of wavelength",
+            "type of enzyme"
+          ]
+        ]
+      ],
+      "Nature's Chemistry": [
+        [
+          "Hydrocarbon",
+          "compound containing hydrogen and carbon only",
+          [
+            "compound with only oxygen",
+            "protein molecule",
+            "ionic salt"
+          ]
+        ],
+        [
+          "Alkane",
+          "saturated hydrocarbon with single carbon-carbon bonds",
+          [
+            "unsaturated molecule with C=C",
+            "alcohol functional group",
+            "ester linkage only"
+          ]
+        ],
+        [
+          "Alkene",
+          "unsaturated hydrocarbon containing a carbon-carbon double bond",
+          [
+            "saturated hydrocarbon only",
+            "metal oxide",
+            "amino acid"
+          ]
+        ],
+        [
+          "Alcohol",
+          "organic compound containing hydroxyl group",
+          [
+            "compound with carboxyl group only",
+            "ionic compound",
+            "noble gas"
+          ]
+        ],
+        [
+          "Ester",
+          "compound often with fruity smell made from alcohol and carboxylic acid",
+          [
+            "metal salt only",
+            "polymer monomer always",
+            "alkali"
+          ]
+        ],
+        [
+          "Combustion",
+          "reaction with oxygen releasing energy",
+          [
+            "reaction with no oxygen ever",
+            "DNA copying",
+            "osmosis"
+          ]
+        ]
+      ],
+      "Chemistry In Society": [
+        [
+          "Ore",
+          "rock containing enough metal compound to extract profitably",
+          [
+            "pure metal only",
+            "polymer chain",
+            "gas molecule only"
+          ]
+        ],
+        [
+          "Electrolysis",
+          "using electricity to break down an ionic compound",
+          [
+            "heating a gas only",
+            "filtering sand",
+            "measuring speed"
+          ]
+        ],
+        [
+          "Fertiliser",
+          "substance adding essential nutrients to soil",
+          [
+            "substance removing all minerals",
+            "type of fuel only",
+            "plastic polymer"
+          ]
+        ],
+        [
+          "Battery",
+          "device converting chemical energy to electrical energy",
+          [
+            "device using gravity only",
+            "enzyme catalyst",
+            "food chain"
+          ]
+        ],
+        [
+          "Polymer",
+          "large molecule made from repeating monomer units",
+          [
+            "single atom only",
+            "ionic lattice only",
+            "enzyme active site"
+          ]
+        ],
+        [
+          "Flame Test",
+          "chemical test identifying metal ions by flame colour",
+          [
+            "test for speed",
+            "DNA test only",
+            "wave test"
+          ]
+        ]
+      ]
+    },
+    "Higher": {
+      "Chemical Changes And Structure": [
+        [
+          "Periodicity",
+          "patterns in element properties across the periodic table",
+          [
+            "random element order",
+            "food chain energy",
+            "DNA copying"
+          ]
+        ],
+        [
+          "Enthalpy Change",
+          "heat energy change during a chemical reaction at constant pressure",
+          [
+            "mass of a substance only",
+            "speed of a wave",
+            "charge per second"
+          ]
+        ],
+        [
+          "Equilibrium",
+          "state where forward and reverse reaction rates are equal",
+          [
+            "reaction has stopped completely",
+            "only products remain",
+            "all particles vanish"
+          ]
+        ],
+        [
+          "Catalyst",
+          "substance increasing reaction rate without being used up",
+          [
+            "reactant that disappears",
+            "product only",
+            "solvent always"
+          ]
+        ],
+        [
+          "Oxidation",
+          "loss of electrons or increase in oxidation number",
+          [
+            "gain of electrons only",
+            "movement of water",
+            "decrease in temperature"
+          ]
+        ],
+        [
+          "pH",
+          "measure of hydrogen ion concentration/acidity",
+          [
+            "measure of mass",
+            "measure of current",
+            "measure of wavelength"
+          ]
+        ]
+      ],
+      "Nature's Chemistry": [
+        [
+          "Functional Group",
+          "atom or group of atoms giving an organic family its characteristic reactions",
+          [
+            "random part of any graph",
+            "metal lattice",
+            "radioactive source"
+          ]
+        ],
+        [
+          "Oxidation Of Alcohols",
+          "primary alcohols can oxidise to aldehydes then carboxylic acids",
+          [
+            "alcohols become metals",
+            "alkanes always become salts",
+            "esters become photons"
+          ]
+        ],
+        [
+          "Addition Reaction",
+          "reaction where atoms add across a double bond",
+          [
+            "reaction removing all atoms",
+            "nuclear decay",
+            "osmosis"
+          ]
+        ],
+        [
+          "Condensation Reaction",
+          "reaction joining molecules with elimination of a small molecule",
+          [
+            "reaction with no product",
+            "ionisation only",
+            "gravity effect"
+          ]
+        ],
+        [
+          "Protein",
+          "polymer made from amino acid monomers",
+          [
+            "polymer made from glucose only",
+            "metal complex",
+            "simple alkane"
+          ]
+        ],
+        [
+          "Esterification",
+          "formation of ester from alcohol and carboxylic acid",
+          [
+            "formation of salt from metal only",
+            "polymerisation of alkenes only",
+            "electricity generation"
+          ]
+        ]
+      ],
+      "Chemistry In Society": [
+        [
+          "Redox",
+          "reaction involving oxidation and reduction",
+          [
+            "reaction involving only melting",
+            "diffusion only",
+            "wave interference"
+          ]
+        ],
+        [
+          "Electrochemical Cell",
+          "device converting chemical energy into electrical energy using redox",
+          [
+            "device storing heat only",
+            "protein machine",
+            "DNA sequencer"
+          ]
+        ],
+        [
+          "Volumetric Analysis",
+          "quantitative analysis using accurate volumes, often titration",
+          [
+            "measuring wave speed",
+            "finding genotype",
+            "counting animals"
+          ]
+        ],
+        [
+          "Chromatography",
+          "separation technique based on different affinities",
+          [
+            "technique for force diagrams",
+            "technique for orbital speed",
+            "technique for quadrats"
+          ]
+        ],
+        [
+          "Atom Economy",
+          "percentage of reactant atoms ending up in desired product",
+          [
+            "percentage of light reflected",
+            "mass per volume",
+            "cell division rate"
+          ]
+        ],
+        [
+          "Hess's Law",
+          "enthalpy change independent of route taken",
+          [
+            "rate depends only on colour",
+            "current equals voltage",
+            "DNA codes proteins"
+          ]
+        ]
+      ],
+      "Researching Chemistry": [
+        [
+          "Titration",
+          "technique using measured volumes to find concentration",
+          [
+            "technique measuring gravity",
+            "counting species",
+            "finding half-life"
+          ]
+        ],
+        [
+          "Uncertainty",
+          "doubt in a measurement value",
+          [
+            "guarantee of exact value",
+            "a product colour",
+            "an ion charge only"
+          ]
+        ],
+        [
+          "Calibration",
+          "checking instrument readings against standards",
+          [
+            "copying notes",
+            "heating without measuring",
+            "choosing random data"
+          ]
+        ],
+        [
+          "Risk Assessment",
+          "identifying hazards and reducing risk",
+          [
+            "ignoring safety",
+            "deleting results",
+            "not wearing goggles only"
+          ]
+        ],
+        [
+          "Conclusion",
+          "statement supported by results and linked to aim",
+          [
+            "guess before experiment",
+            "apparatus list",
+            "title only"
+          ]
+        ],
+        [
+          "Evaluation",
+          "judgement of method, reliability and improvements",
+          [
+            "only repeating aim",
+            "no discussion of errors",
+            "writing no units"
+          ]
+        ]
+      ]
+    },
+    "Advanced Higher": {
+      "Inorganic Chemistry": [
+        [
+          "Transition Metal",
+          "d-block element forming ions with incomplete d subshells",
+          [
+            "group 1 metal only",
+            "noble gas only",
+            "polymer chain"
+          ]
+        ],
+        [
+          "Ligand",
+          "ion or molecule donating a lone pair to a metal ion",
+          [
+            "electron acceptor only",
+            "hydrocarbon fuel",
+            "wave particle"
+          ]
+        ],
+        [
+          "Complex Ion",
+          "central metal ion surrounded by ligands",
+          [
+            "DNA molecule",
+            "ionic lattice only",
+            "gas law"
+          ]
+        ],
+        [
+          "Crystal Field Splitting",
+          "splitting of d orbitals in a ligand field",
+          [
+            "splitting of DNA",
+            "splitting light by prism only",
+            "separating mixtures"
+          ]
+        ],
+        [
+          "Oxidation State",
+          "apparent charge of an atom in a compound",
+          [
+            "mass number only",
+            "wavelength",
+            "reaction rate"
+          ]
+        ],
+        [
+          "Colour In Complexes",
+          "often caused by d-d transitions absorbing visible light",
+          [
+            "always caused by pH only",
+            "always colourless",
+            "caused by gravity"
+          ]
+        ]
+      ],
+      "Physical Chemistry": [
+        [
+          "Rate Law",
+          "relationship between reaction rate and concentration of reactants",
+          [
+            "law of conservation of mass only",
+            "voltage rule",
+            "food chain rule"
+          ]
+        ],
+        [
+          "Order Of Reaction",
+          "power to which concentration is raised in the rate equation",
+          [
+            "position in periodic table",
+            "number of products only",
+            "molar mass"
+          ]
+        ],
+        [
+          "Equilibrium Constant",
+          "value expressing product/reactant concentrations at equilibrium",
+          [
+            "random yield percentage",
+            "speed of light",
+            "pH only"
+          ]
+        ],
+        [
+          "Gibbs Free Energy",
+          "quantity used to predict feasibility of a reaction",
+          [
+            "mass of an atom",
+            "charge flow",
+            "enzyme shape"
+          ]
+        ],
+        [
+          "Electrode Potential",
+          "tendency of a species to gain electrons",
+          [
+            "tendency to evaporate only",
+            "mass per volume",
+            "reaction colour"
+          ]
+        ],
+        [
+          "Arrhenius Equation",
+          "relationship between rate constant and temperature",
+          [
+            "relationship between voltage and current",
+            "between force and mass",
+            "between wavelength and frequency only"
+          ]
+        ]
+      ],
+      "Organic Chemistry": [
+        [
+          "Nucleophile",
+          "electron-pair donor attracted to electron-deficient centres",
+          [
+            "electron-pair acceptor only",
+            "metal ion always",
+            "gamma ray"
+          ]
+        ],
+        [
+          "Electrophile",
+          "electron-pair acceptor attracted to electron-rich centres",
+          [
+            "electron-pair donor only",
+            "solvent only",
+            "alkane only"
+          ]
+        ],
+        [
+          "Stereoisomers",
+          "molecules with same formula but different spatial arrangement",
+          [
+            "molecules with different formulae",
+            "ions only",
+            "elements only"
+          ]
+        ],
+        [
+          "Aromatic Compound",
+          "compound containing a benzene ring or related stable pi system",
+          [
+            "compound with only single bonds in chain",
+            "ionic salt",
+            "metal complex only"
+          ]
+        ],
+        [
+          "Reaction Mechanism",
+          "step-by-step description of bond breaking and forming",
+          [
+            "balanced equation only",
+            "hazard symbol only",
+            "spectra only"
+          ]
+        ],
+        [
+          "Synthesis Route",
+          "planned sequence of reactions to make a target molecule",
+          [
+            "random mixing of chemicals",
+            "only naming compounds",
+            "using no reagents"
+          ]
+        ]
+      ],
+      "Instrumental Analysis": [
+        [
+          "Infrared Spectroscopy",
+          "identifies bonds using absorption of infrared radiation",
+          [
+            "measures electric current only",
+            "counts animals",
+            "finds velocity"
+          ]
+        ],
+        [
+          "NMR Spectroscopy",
+          "gives information about chemical environments of nuclei",
+          [
+            "measures pH directly",
+            "separates pigments only",
+            "calculates force"
+          ]
+        ],
+        [
+          "Mass Spectrometry",
+          "measures mass-to-charge ratios of ions",
+          [
+            "measures heat capacity",
+            "calculates voltage",
+            "counts quadrats"
+          ]
+        ],
+        [
+          "Chromatography",
+          "separates substances based on different interactions with phases",
+          [
+            "changes nuclear identity",
+            "measures force",
+            "forms proteins"
+          ]
+        ],
+        [
+          "Chemical Shift",
+          "position of NMR signal linked to chemical environment",
+          [
+            "distance in orbit",
+            "cell membrane thickness",
+            "wave speed only"
+          ]
+        ],
+        [
+          "Molecular Ion Peak",
+          "mass spectrum peak corresponding to molecular mass",
+          [
+            "infrared bond stretch",
+            "rate constant",
+            "equilibrium colour"
+          ]
+        ]
+      ],
+      "Researching Chemistry": [
+        [
+          "Research Aim",
+          "clear statement of what the investigation tests",
+          [
+            "final graph",
+            "random question",
+            "safety symbol only"
+          ]
+        ],
+        [
+          "Variable Control",
+          "keeping relevant factors constant for fair testing",
+          [
+            "changing everything",
+            "ignoring conditions",
+            "only writing title"
+          ]
+        ],
+        [
+          "Data Analysis",
+          "processing results using calculations and graphs",
+          [
+            "copying apparatus list",
+            "guessing conclusion",
+            "not using units"
+          ]
+        ],
+        [
+          "Reliability",
+          "consistency improved by repeats",
+          [
+            "colour of solution",
+            "cost of equipment",
+            "randomness"
+          ]
+        ],
+        [
+          "Validity",
+          "whether the method tests what it is meant to test",
+          [
+            "number of pages",
+            "font size",
+            "using no controls"
+          ]
+        ],
+        [
+          "Scientific Evaluation",
+          "balanced judgement of limitations, errors and improvements",
+          [
+            "stating perfect method",
+            "no conclusion",
+            "copying background only"
+          ]
+        ]
+      ]
+    }
+  }
+};
+
+function buildQuestionsFromFacts(facts, subject, level, topic){
+  const direct = facts.map((f, i) => ({
+    q: `In ${level} ${subject}, what does "${f[0]}" mean in ${topic}?`,
+    a: 0,
+    options: [f[1], ...(f[2] || [])].slice(0,4)
+  }));
+  const applied = facts.map((f, i) => ({
+    q: `Which option is the best example or use of "${f[0]}"?`,
+    a: 1,
+    options: [
+      `Ignoring ${topic} completely`,
+      f[1],
+      `Only writing the title "${topic}"`,
+      `Choosing answers without checking course content`
+    ]
+  }));
+  return [...direct, ...applied].slice(0,10).map((x,i)=>({...x,id:i+1}));
+}
+
 function makeQuiz(subject, level, topic){
+  const facts = QUESTION_FACTS?.[subject]?.[level]?.[topic];
+  if (facts && facts.length >= 5) return buildQuestionsFromFacts(facts, subject, level, topic);
+
   const topicData = TOPICS[subject][level].find(t=>t[0]===topic) || [topic,"",""];
   const [title, summary, revise] = topicData;
   return [
