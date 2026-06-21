@@ -1,1 +1,87 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#7c3aed"/><text x="32" y="43" font-size="38" text-anchor="middle">🦊</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="foxFace" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFB347"/>
+      <stop offset="100%" stop-color="#FF6B35"/>
+    </linearGradient>
+
+    <linearGradient id="foxMuzzle" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF7ED"/>
+      <stop offset="100%" stop-color="#FFE8D6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Left Ear -->
+  <path
+    d="M32 45 L44 12 L58 40 Z"
+    fill="#FF7A3D"
+  />
+
+  <!-- Right Ear -->
+  <path
+    d="M70 40 L84 12 L96 45 Z"
+    fill="#FF7A3D"
+  />
+
+  <!-- Ear Inner -->
+  <path
+    d="M40 36 L45 20 L51 34 Z"
+    fill="#FFD8D8"
+  />
+
+  <path
+    d="M77 34 L83 20 L88 36 Z"
+    fill="#FFD8D8"
+  />
+
+  <!-- Face -->
+  <circle
+    cx="64"
+    cy="68"
+    r="40"
+    fill="url(#foxFace)"
+  />
+
+  <!-- Muzzle -->
+  <ellipse
+    cx="64"
+    cy="80"
+    rx="18"
+    ry="14"
+    fill="url(#foxMuzzle)"
+  />
+
+  <!-- Eyes -->
+  <circle cx="52" cy="65" r="3.5" fill="#1F2937"/>
+  <circle cx="76" cy="65" r="3.5" fill="#1F2937"/>
+
+  <!-- Nose -->
+  <circle cx="64" cy="78" r="3" fill="#1F2937"/>
+
+  <!-- Mouth -->
+  <path
+    d="M64 81 L58 87"
+    stroke="#1F2937"
+    stroke-width="2.5"
+    stroke-linecap="round"
+  />
+
+  <path
+    d="M64 81 L70 87"
+    stroke="#1F2937"
+    stroke-width="2.5"
+    stroke-linecap="round"
+  />
+
+  <!-- Cheeks -->
+  <circle cx="46" cy="76" r="4" fill="#FFB6C1" opacity="0.7"/>
+  <circle cx="82" cy="76" r="4" fill="#FFB6C1" opacity="0.7"/>
+
+  <!-- Little crown -->
+  <path
+    d="M54 28 L60 20 L64 28 L68 18 L74 28"
+    fill="#FFD700"
+    stroke="#FBBF24"
+    stroke-width="1"
+  />
+</svg>
